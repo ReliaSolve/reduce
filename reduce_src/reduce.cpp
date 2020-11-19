@@ -1748,8 +1748,10 @@ void analyzeRes(CTab& hetdatabase, ResBlk* pb, ResBlk* cb, ResBlk* nb,
 	}
 
 	// work through each atom placement plan - S.J. each atom placement plan is a potential H atom that needs to be added. The hydrogens that are already present are not looked at right now.
+  int i = 0;
 	if (AddOtherHydrogens) {
 		for (std::list<atomPlacementPlan*>::const_iterator iter = app.begin(); iter != app.end(); ++iter) {
+      std::cerr << "XXX Calling genHydrogens, iteration " << i++ << std::endl;
 			genHydrogens(**iter, *cb, o2prime, xyz, resAlts, fixNotes, rlst);
 		}
 	}
@@ -1896,6 +1898,7 @@ void genHydrogens(const atomPlacementPlan& pp, ResBlk& theRes, bool o2prime,
 				if (!rs.empty()) {
 					nconf[i] = rs.size();
 					maxalt = std::max(maxalt, nconf[i]);
+          std::cerr << "XXX maxalt = " << maxalt << std::endl;
 					std::vector<PDBrec*> rvv_v;
 					rvv_v.reserve(nconf[i]);
 					std::list<PDBrec*>::iterator it_rs = rs.begin();
@@ -1937,6 +1940,7 @@ void genHydrogens(const atomPlacementPlan& pp, ResBlk& theRes, bool o2prime,
 			if (pp.hasFeature(STRICTALTFLAG) && (numConnAtoms > 3)
 				&& (nconf[0] == 1) && (nconf[1] == 1) && (nconf[2] == 1)) {
 				maxalt = 1; // this is an H(alpha) so ignore the fourth (CBeta) alternate conf
+        std::cerr << "XXX h(alpha)" << std::endl;
 				considerNonAlt = TRUE;
 				all_confs.clear();
 				const PDBrec* cnr = rvv[0][0];
@@ -1950,6 +1954,7 @@ void genHydrogens(const atomPlacementPlan& pp, ResBlk& theRes, bool o2prime,
 
 			std::vector<Point3d> loc(numConnAtoms);
 			std::vector<int> counter(numConnAtoms);
+      std::cerr << "XXX outside j loop" << std::endl;
 			for(j=0; success && j < maxalt; j++) { // for each alternate conformation...
 				char altId = ' ', foundId = ' ';
 				float occ = (*(firstAtoms.begin()))->occupancy();
@@ -2065,7 +2070,7 @@ void genHydrogens(const atomPlacementPlan& pp, ResBlk& theRes, bool o2prime,
 
 						xyz.put(newHatom); // index in the xyz table
 
-						if (doNotAdjustSC) { return; } // do not add to the adjustable info
+						if (doNotAdjustSC) { std::cerr << "XXX res " << newHatom->resname() << ", num " << newHatom->resno() << ", alt " << j << " of " << maxalt << ": " << (int)all_confs[j] << std::endl; return; } // do not add to the adjustable info
 
 						if ( pp.hasFeature(ROTATEFLAG)
 							||  (pp.hasFeature(ROTATEONDEMAND)
