@@ -41,6 +41,7 @@ RotAromMethyl::RotAromMethyl(const Point3d& a, const Point3d& b,
                      const double ang, const PDBrec& heavyAtom)
    : RotMethyl(a, b, ang, heavyAtom)
 {
+  std::cerr << "XXX Constructed RotAromMethyl" << std::endl;
   // Override these to change the class behavior.
   START_ANGLE = 150;
   ROUGH_STEP = 180;
