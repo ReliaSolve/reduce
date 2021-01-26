@@ -48,12 +48,14 @@ RotAromMethyl::RotAromMethyl(const Point3d& a, const Point3d& b,
 
 int RotAromMethyl::numOrientations(SearchStrategy ss) const
 {
+  std::cerr << "XXX Called RotAromMethyl::numOrientations()" << std::endl;
 	return 2;
 }
 
 bool RotAromMethyl::setOrientation(int oi, float delta, AtomPositions &xyz,
                                                      SearchStrategy ss)
 {
+  std::cerr << "XXX Called RotAromMethyl::setOrientation()" << std::endl;
 	const double oldTheta = angle();
 	const double    theta = orientationAngle(oi, Mover::LOW_RES) + delta;
 
